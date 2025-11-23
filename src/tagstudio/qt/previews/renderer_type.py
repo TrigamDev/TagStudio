@@ -1,5 +1,7 @@
 from enum import Enum
 
+from src.tagstudio.qt.previews.renderers.medibang_paint_renderer import MedibangPaintRenderer
+from src.tagstudio.qt.previews.renderers.paint_dot_net_renderer import PaintDotNetRenderer
 from tagstudio.core.media_types import MediaCategories
 from tagstudio.qt.previews.renderers.audio_renderer import AudioRenderer
 from tagstudio.qt.previews.renderers.base_renderer import BaseRenderer
@@ -23,6 +25,8 @@ from tagstudio.qt.previews.renderers.vtf_renderer import VTFRenderer
 class RendererType(Enum):
     # Project files
     KRITA = "krita", MediaCategories.KRITA_TYPES, KritaRenderer, True
+    MEDIBANG = "medibang_paint", MediaCategories.MDIPACK_TYPES, MedibangPaintRenderer, True
+    PAINT_DOT_NET = "paint_dot_net", MediaCategories.PAINT_DOT_NET_TYPES, PaintDotNetRenderer, True
 
     # Model files
     BLENDER = "blender", MediaCategories.BLENDER_TYPES, BlenderRenderer, True
