@@ -48,6 +48,7 @@ class MediaType(str, Enum):
     INSTALLER = "installer"
     IWORK = "iwork"
     MATERIAL = "material"
+    MDIPACK = "mdipack"
     MODEL = "model"
     OPEN_DOCUMENT = "open_document"
     PACKAGE = "package"
@@ -352,6 +353,7 @@ class MediaCategories:
     _IWORK_SET: set[str] = {".key", ".pages", ".numbers"}
     _KRITA_SET: set[str] = {".kra", ".krz"}
     _MATERIAL_SET: set[str] = {".mtl"}
+    _MDIPACK_SET: set[str] = {".mdp"}
     _MODEL_SET: set[str] = {".3ds", ".fbx", ".obj", ".stl"}
     _OPEN_DOCUMENT_SET: set[str] = {
         ".fodg",
@@ -563,6 +565,12 @@ class MediaCategories:
         is_iana=False,
         name="material",
     )
+    MDIPACK_TYPES = MediaCategory(
+        media_type=MediaType.MDIPACK,
+        extensions=_MDIPACK_SET,
+        is_iana=False,
+        name="mdipack",
+    )
     MODEL_TYPES = MediaCategory(
         media_type=MediaType.MODEL,
         extensions=_MODEL_SET,
@@ -680,6 +688,7 @@ class MediaCategories:
         INSTALLER_TYPES,
         IWORK_TYPES,
         MATERIAL_TYPES,
+        MDIPACK_TYPES,
         MODEL_TYPES,
         OPEN_DOCUMENT_TYPES,
         PACKAGE_TYPES,
