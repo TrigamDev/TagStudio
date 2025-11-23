@@ -1,7 +1,4 @@
-import base64
 import sqlite3
-import struct
-import xml.etree.ElementTree as ElementTree
 from io import BytesIO
 
 import structlog

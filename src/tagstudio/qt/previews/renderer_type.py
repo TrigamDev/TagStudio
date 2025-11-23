@@ -36,7 +36,12 @@ class RendererType(Enum):
     AUDIO = "audio", MediaCategories.AUDIO_TYPES, AudioRenderer, False
 
     # Project files
-    CLIP_STUDIO_PAINT = "clip_studio_paint", MediaCategories.CLIP_STUDIO_PAINT_TYPES, ClipStudioPaintRenderer, True
+    CLIP_STUDIO_PAINT = (
+        "clip_studio_paint",
+        MediaCategories.CLIP_STUDIO_PAINT_TYPES,
+        ClipStudioPaintRenderer,
+        True,
+    )
     KRITA = "krita", MediaCategories.KRITA_TYPES, KritaRenderer, True
     MEDIBANG = "medibang_paint", MediaCategories.MDIPACK_TYPES, MedibangPaintRenderer, True
     PAINT_DOT_NET = "paint_dot_net", MediaCategories.PAINT_DOT_NET_TYPES, PaintDotNetRenderer, True
