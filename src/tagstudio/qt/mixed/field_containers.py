@@ -36,9 +36,6 @@ from tagstudio.core.library.alchemy.models import Entry, Tag
 from tagstudio.core.utils.types import unwrap
 from tagstudio.qt.controllers.preview_panel.fields.tag_box_widget_controller import TagBoxWidget
 from tagstudio.qt.mixed.datetime_picker import DatetimePicker
-from tagstudio.qt.mixed.field_widget import FieldContainer
-from tagstudio.qt.mixed.text_field import TextWidget
-from tagstudio.qt.mixed.url_widget import UrlWidget
 from tagstudio.qt.translations import Translations
 from tagstudio.qt.views.edit_text_box_modal import EditTextBox
 from tagstudio.qt.views.edit_text_line_modal import EditTextLine
@@ -46,6 +43,7 @@ from tagstudio.qt.views.edit_url_modal import EditUrl
 from tagstudio.qt.views.panel_modal import PanelModal
 from tagstudio.qt.views.preview_panel.fields.field_container import FieldContainer
 from tagstudio.qt.views.preview_panel.fields.text_field_widget import TextFieldWidget
+from tagstudio.qt.views.preview_panel.fields.url_field_widget import UrlFieldWidget
 
 if typing.TYPE_CHECKING:
     from tagstudio.qt.ts_qt import QtDriver
@@ -359,8 +357,8 @@ class FieldContainers(QWidget):
                 url_value = "<i>Mixed Data</i>"
 
             title = f"{field.type.name} ({field.type.type.value})"
-            inner_widget = UrlWidget(title, url_title, url_value)
-            container.set_inner_widget(inner_widget)
+            inner_widget = UrlFieldWidget(title, url_title, url_value)
+            container.set_field_widget(inner_widget)
             if not is_mixed:
                 modal = PanelModal(
                     EditUrl(url_title, url_value),

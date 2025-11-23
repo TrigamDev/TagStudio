@@ -4,7 +4,7 @@
 import structlog
 from PySide6.QtCore import Qt
 
-from tagstudio.qt.mixed.text_field import TextWidget
+from src.tagstudio.qt.views.preview_panel.fields.text_field_widget import TextFieldWidget
 
 logger = structlog.get_logger(__name__)
 
@@ -16,7 +16,9 @@ def to_anchor(url_title: str | None, url_value: str) -> str:
     return f'<a href="{url_value}">{url_title}</a>'
 
 
-class UrlWidget(TextWidget):
+class UrlFieldWidget(TextFieldWidget):
+    """A widget representing a URL field of an entry."""
+
     def __init__(self, title, url_title: str | None, url_value: str) -> None:
         super().__init__(title, to_anchor(url_title, url_value))
         self.setObjectName("urlLine")

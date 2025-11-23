@@ -16,8 +16,6 @@ from tagstudio.core.media_types import MediaType
 from tagstudio.qt.controllers.preview_panel.thumbnail.text_display_controller import (
     TextDisplayController,
 )
-from tagstudio.qt.mixed.file_attributes import FileAttributeData
-from tagstudio.qt.mixed.media_player import MediaPlayer
 from tagstudio.qt.mixed.preview_panel.thumbnail.media_player import MediaPlayer
 from tagstudio.qt.platform_strings import open_file_str, trash_term
 from tagstudio.qt.previews.renderer import ThumbRenderer
@@ -121,16 +119,12 @@ class PreviewThumbView(QWidget):
 
         self.__preview_text_page = QWidget()
         self.__stacked_page_setup(self.__preview_text_page, self.__text_display)
+        self.__thumb_layout.addWidget(self.__preview_text_page)
 
         # Thumbnail renderer
         self.__thumb_renderer = ThumbRenderer(driver)
         self.__thumb_renderer.updated.connect(self.__thumb_renderer_updated_callback)
         self.__thumb_renderer.updated_ratio.connect(self.__thumb_renderer_updated_ratio_callback)
-
-        self.__image_layout.addWidget(self.__preview_img_page)
-        self.__image_layout.addWidget(self.__preview_gif_page)
-        self.__image_layout.addWidget(self.__media_player_page)
-        self.__image_layout.addWidget(self.__preview_text_page)
 
         self.setMinimumSize(*self.__thumbnail_button_size)
 
@@ -195,8 +189,8 @@ class PreviewThumbView(QWidget):
         self._media_player.setMaximumSize(adj_size)
         self._media_player.setMinimumSize(adj_size)
 
-        self.__text_display.setMaximumSize(size[0], size[1])
-        self.__text_display.setMinimumSize(size[0], size[1])
+        self.__text_display.setMaximumSize(adj_size)
+        self.__text_display.setMinimumSize(adj_size)
 
         proxy_style = RoundedPixmapStyle(radius=8)
         self.__preview_gif.setStyle(proxy_style)
@@ -232,7 +226,7 @@ class PreviewThumbView(QWidget):
 
         if preview == MediaType.PLAINTEXT:
             self.__text_display.show()
-            self.__image_layout.setCurrentWidget(self.__preview_text_page)
+            self.__thumb_layout.setCurrentWidget(self.__preview_text_page)
         else:
             self.__text_display.hide()
 

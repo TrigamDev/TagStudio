@@ -166,7 +166,9 @@ class PreviewThumb(PreviewThumbView):
         # Text/Code
         elif MediaCategories.PLAINTEXT_TYPES.contains(ext, mime_fallback=True):
             self._display_text(filepath)
-            return self.__get_image_stats(filepath)
+
+            image_size: QSize = self.__get_image_size(filepath)
+            self._on_dimensions_change(image_size)
         # Other Types (Including Images)
         else:
             self._display_image(filepath)

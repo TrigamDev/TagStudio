@@ -27,9 +27,6 @@ class TextFieldWidget(FieldWidget):
         self.text_label.setWordWrap(True)
 
         self.__root_layout.addWidget(self.text_label)
-
-        # Fill data
-        self.base_layout.addWidget(self.text_label)
         self.set_text(text)
 
     def set_text(self, text: str):
