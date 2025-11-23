@@ -1,5 +1,6 @@
 from enum import Enum
 
+from src.tagstudio.qt.previews.renderers.clip_renderer import ClipStudioPaintRenderer
 from src.tagstudio.qt.previews.renderers.medibang_paint_renderer import MedibangPaintRenderer
 from src.tagstudio.qt.previews.renderers.paint_dot_net_renderer import PaintDotNetRenderer
 from tagstudio.core.media_types import MediaCategories
@@ -35,6 +36,7 @@ class RendererType(Enum):
     AUDIO = "audio", MediaCategories.AUDIO_TYPES, AudioRenderer, False
 
     # Project files
+    CLIP_STUDIO_PAINT = "clip_studio_paint", MediaCategories.CLIP_STUDIO_PAINT_TYPES, ClipStudioPaintRenderer, True
     KRITA = "krita", MediaCategories.KRITA_TYPES, KritaRenderer, True
     MEDIBANG = "medibang_paint", MediaCategories.MDIPACK_TYPES, MedibangPaintRenderer, True
     PAINT_DOT_NET = "paint_dot_net", MediaCategories.PAINT_DOT_NET_TYPES, PaintDotNetRenderer, True
