@@ -708,6 +708,20 @@ class Library:
             session.commit()
             logger.info("[Library][Migration] Verified TagParent table data")
 
+    def __apply_db103_default_data(self, session: Session):
+        """Apply default data changes introduced in DB_VERSION 103."""
+        try:
+            session.query(Tag).filter(Tag.id == TAG_ARCHIVED).update({"is_hidden": True})
+            session.commit()
+            logger.info("[Library][Migration] Updated archived tag to be hidden")
+            session.commit()
+        except Exception as e:
+            logger.error(
+                "[Library][Migration] Could not update archived tag to be hidden!",
+                error=e,
+            )
+            session.rollback()
+
     def __apply_db103_schema_changes(self, session: Session):
         """Apply database schema changes introduced in DB_VERSION 103."""
         add_is_hidden_column = text(
@@ -1116,17 +1130,8 @@ class Library:
 
             ast = search.ast
 
-            if search.exclude_hidden_entries:
-                hidden_tag_ids = self.get_hidden_tag_ids()
-                hidden_tag_constraints: list[Constraint] = list(
-                    map(
-                        lambda tag_id: Constraint(ConstraintType.TagID, str(tag_id), []),
-                        hidden_tag_ids,
-                    )
-                )
-                hidden_tag_ast = Not(ORList(hidden_tag_constraints))
-
-                ast = hidden_tag_ast if not ast else ANDList([search.ast, hidden_tag_ast])
+            if not search.show_hidden_entries:
+                statement = statement.where(~Entry.tags.any(Tag.is_hidden))
 
             if ast:
                 start_time = time.time()
