@@ -105,7 +105,6 @@ from tagstudio.core.library.alchemy.models import (
 )
 from tagstudio.core.library.alchemy.visitors import SQLBoolExpressionBuilder
 from tagstudio.core.library.json.library import Library as JsonLibrary
-from tagstudio.core.query_lang.ast import ANDList, Constraint, ConstraintType, Not, ORList
 from tagstudio.core.utils.types import unwrap
 from tagstudio.qt.translations import Translations
 
