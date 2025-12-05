@@ -187,7 +187,7 @@ class PreviewPanelView(QWidget):
             elif len(selected) > 1:
                 self.add_buttons_enabled = True
                 self._thumb.hide_preview()  # TODO: Render mixed selection
-                self._file_attributes.update_multi_selection(len(selected))
+                self._file_attributes.set_selection_size(len(selected))
                 self._file_attributes.update_date_label()
                 self._fields.update_from_entries(selected)
 
