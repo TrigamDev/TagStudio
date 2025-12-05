@@ -94,12 +94,14 @@ class Not(AST):
         super().__init__()
         self.child = child
 
+
 class Boolean(AST):
     value: bool
 
     def __init__(self, value: bool) -> None:
         super().__init__()
         self.value = value
+
 
 T = TypeVar("T")
 

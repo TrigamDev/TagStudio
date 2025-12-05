@@ -1,5 +1,6 @@
 # Licensed under the GPL-3.0 License.
 # Created for TagStudio: https://github.com/CyanVoxel/TagStudio
+
 import traceback
 import typing
 from pathlib import Path
@@ -170,6 +171,8 @@ class PreviewPanelView(QWidget):
 
                 filepath: Path = unwrap(self.lib.library_dir) / entry.path
 
+                self.add_buttons_enabled = True
+
                 if update_preview:
                     self._thumb.display_file(filepath)
                     self._file_attributes.update_file_path(filepath)
@@ -180,19 +183,15 @@ class PreviewPanelView(QWidget):
 
                 self._set_selection_callback()
 
-                self.add_buttons_enabled = True
-
             # Multiple Selected Items
             elif len(selected) > 1:
-                # items: list[Entry] = [self.lib.get_entry_full(x) for x in self.driver.selected]
+                self.add_buttons_enabled = True
                 self._thumb.hide_preview()  # TODO: Render mixed selection
-                self._file_attributes.set_selection_size(len(selected))
+                self._file_attributes.update_multi_selection(len(selected))
                 self._file_attributes.update_date_label()
-                self._fields.hide_containers()  # TODO: Allow for mixed editing
+                self._fields.update_from_entries(selected)
 
                 self._set_selection_callback()
-
-                self.add_buttons_enabled = True
 
         except Exception as e:
             logger.error("[Preview Panel] Error updating selection", error=e)
