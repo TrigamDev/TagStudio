@@ -26,6 +26,9 @@ def test_refresh_new_files(library: Library, exclude_mode: bool):
     library.included_files.clear()
     (library_dir / "FOO.MD").touch()
 
-    # Test if the single file was added
-    list(registry.refresh_dir(library_dir, force_internal_tools=True))
+    # When
+    counts = registry.refresh_dir(library.library_dir)
+    assert list(counts) == [0, 1]
+
+    # Then
     assert registry.files_not_in_library == [Path("FOO.MD")]

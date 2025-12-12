@@ -12,7 +12,7 @@ import shutil
 import sys
 import time
 import unicodedata
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from os import makedirs
@@ -1109,7 +1109,11 @@ class Library:
         with Session(self.engine) as session:
             return session.query(exists().where(Entry.path == path)).scalar()
 
-    def get_paths(self, limit: int = -1) -> list[str]:
+    def all_paths(self) -> Sequence[Path]:
+        with Session(self.engine) as session:
+            return session.scalars(select(Entry.path)).fetchall()
+
+    def get_paths(self, glob: str | None = None, limit: int = -1) -> list[str]:
         path_strings: list[str] = []
         with Session(self.engine) as session:
             if limit > 0:
