@@ -1,9 +1,10 @@
+from collections.abc import Iterator
 from enum import Enum
 
 from src.tagstudio.qt.previews.renderers.clip_renderer import ClipStudioPaintRenderer
 from src.tagstudio.qt.previews.renderers.medibang_paint_renderer import MedibangPaintRenderer
 from src.tagstudio.qt.previews.renderers.paint_dot_net_renderer import PaintDotNetRenderer
-from tagstudio.core.media_types import MediaCategories
+from tagstudio.core.media_types import MediaCategories, MediaCategory
 from tagstudio.qt.previews.renderers.audio_renderer import AudioRenderer
 from tagstudio.qt.previews.renderers.base_renderer import BaseRenderer
 from tagstudio.qt.previews.renderers.blender_renderer import BlenderRenderer
@@ -67,22 +68,20 @@ class RendererType(Enum):
     def __init__(
         self,
         name: str,
-        media_category: MediaCategories,
+        media_category: MediaCategory,
         renderer: type[BaseRenderer],
         is_savable_media_type: bool,
     ):
         self.__name: str = name
-        self.media_category: MediaCategories = media_category
+        self.media_category: MediaCategory = media_category
         self.renderer: type[BaseRenderer] = renderer
 
         self.is_savable_media_type = is_savable_media_type
 
     @staticmethod
-    def get_renderer_type(file_extension: str) -> "RendererType | None":
+    def get_renderer_types(file_extension: str) -> Iterator["RendererType"]:
         for renderer_type in RendererType.__members__.values():
             if MediaCategories.is_ext_in_category(
                 file_extension, renderer_type.media_category, mime_fallback=True
             ):
-                return renderer_type
-
-        return None
+                yield renderer_type
