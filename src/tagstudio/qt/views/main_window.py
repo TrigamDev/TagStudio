@@ -16,6 +16,7 @@ from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
     QCompleter,
+    QDockWidget,
     QFrame,
     QGridLayout,
     QHBoxLayout,
@@ -535,11 +536,20 @@ class MainWindow(QMainWindow):
 
     def setup_search_bar(self):
         """Sets up Nav Buttons, Search Field, Search Button."""
+        # Search bar
+        self.search_bar_dock = QDockWidget()
+        self.addDockWidget(Qt.DockWidgetArea.TopDockWidgetArea, self.search_bar_dock)
+
+        self.search_bar = QWidget()
+        self.search_bar_dock.setWidget(self.search_bar)
+
         self.search_bar_layout = QHBoxLayout()
         self.search_bar_layout.setObjectName("search_bar_layout")
         self.search_bar_layout.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
+        self.search_bar.setLayout(self.search_bar_layout)
 
-        self.back_button = QPushButton(self.central_widget)
+        # Navigation buttons
+        self.back_button = QPushButton(self.search_bar_dock)
         back_icon: Image.Image = self.rm.get("bxs-left-arrow")  # pyright: ignore[reportAssignmentType]
         back_icon = theme_fg_overlay(back_icon, use_alpha=False)
         self.back_button.setIcon(QPixmap.fromImage(ImageQt.ImageQt(back_icon)))
@@ -548,7 +558,7 @@ class MainWindow(QMainWindow):
         self.back_button.setMaximumSize(QSize(32, 16777215))
         self.search_bar_layout.addWidget(self.back_button)
 
-        self.forward_button = QPushButton(self.central_widget)
+        self.forward_button = QPushButton(self.search_bar_dock)
         forward_icon: Image.Image = self.rm.get("bxs-right-arrow")  # pyright: ignore[reportAssignmentType]
         forward_icon = theme_fg_overlay(forward_icon, use_alpha=False)
         self.forward_button.setIcon(QPixmap.fromImage(ImageQt.ImageQt(forward_icon)))
@@ -558,7 +568,8 @@ class MainWindow(QMainWindow):
         self.forward_button.setMaximumSize(QSize(32, 16777215))
         self.search_bar_layout.addWidget(self.forward_button)
 
-        self.search_field = QLineEdit(self.central_widget)
+        # Search field
+        self.search_field = QLineEdit(self.search_bar_dock)
         self.search_field.setPlaceholderText(Translations["home.search_entries"])
         self.search_field.setObjectName("search_field")
         self.search_field.setMinimumSize(QSize(0, 32))
@@ -570,12 +581,11 @@ class MainWindow(QMainWindow):
         self.search_field.setCompleter(self.search_field_completer)
         self.search_bar_layout.addWidget(self.search_field)
 
-        self.search_button = QPushButton(Translations["home.search"], self.central_widget)
+        # Search button
+        self.search_button = QPushButton(Translations["home.search"], self.search_bar_dock)
         self.search_button.setObjectName("search_button")
         self.search_button.setMinimumSize(QSize(0, 32))
         self.search_bar_layout.addWidget(self.search_button)
-
-        self.central_layout.addLayout(self.search_bar_layout, 3, 0, 1, 1)
 
     def setup_extra_input_bar(self):
         """Sets up inputs for sorting settings and thumbnail size."""
