@@ -100,6 +100,7 @@ from tagstudio.qt.utils.file_deleter import delete_file
 from tagstudio.qt.utils.function_iterator import FunctionIterator
 from tagstudio.qt.views.main_window import MainWindow
 from tagstudio.qt.views.panel_modal import PanelModal
+from tagstudio.qt.views.panels.manage_fields_panel import ManageFieldsPanel
 from tagstudio.qt.views.splash import SplashScreen
 
 BADGE_TAGS = {
@@ -183,6 +184,7 @@ class QtDriver(DriverMixin, QObject):
 
     tag_manager_panel: PanelModal | None = None
     color_manager_panel: TagColorManager | None = None
+    field_manager_panel: PanelModal | None = None
     ignore_modal: PanelModal | None = None
     add_tag_modal: PanelModal | None = None
     folders_modal: FoldersToTagsModal
@@ -380,6 +382,16 @@ class QtDriver(DriverMixin, QObject):
             )
         )
 
+        # Initialize the Field Manager panel
+        self.field_manager_panel = PanelModal(
+            widget=ManageFieldsPanel(self, self.lib),
+            title=Translations["field_manager.title"],
+            done_callback=lambda checked=False: (
+                self.main_window.preview_panel.set_selection(self.selected, update_preview=False)
+            ),
+            has_save=False,
+        )
+
         # region Menu Bar
 
         # region File Menu ============================================================
@@ -462,6 +474,8 @@ class QtDriver(DriverMixin, QObject):
         self.main_window.menu_bar.color_manager_action.triggered.connect(
             self.color_manager_panel.show
         )
+
+        self.main_window.menu_bar.field_manager_action.triggered.connect(self.field_manager_panel.show)
 
         # endregion
 
@@ -1652,6 +1666,7 @@ class QtDriver(DriverMixin, QObject):
         self.main_window.menu_bar.refresh_dir_action.setEnabled(True)
         self.main_window.menu_bar.tag_manager_action.setEnabled(True)
         self.main_window.menu_bar.color_manager_action.setEnabled(True)
+        self.main_window.menu_bar.field_manager_action.setEnabled(True)
         self.main_window.menu_bar.ignore_modal_action.setEnabled(True)
         self.main_window.menu_bar.new_tag_action.setEnabled(True)
         self.main_window.menu_bar.fix_unlinked_entries_action.setEnabled(True)

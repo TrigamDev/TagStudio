@@ -1145,6 +1145,29 @@ class Library:
 
             return res
 
+    def search_fields(self, name: str | None) -> set[ValueType]:
+        """Return a list of Field records matching the query."""
+        with Session(self.engine) as session:
+            query = select(ValueType).order_by(func.lower(ValueType.name))
+
+            if name:
+                query = query.where(
+                    ValueType.name.icontains(name)
+                )
+
+            found_fields = set(session.scalars(query))
+
+            logger.info(
+                "searching fields",
+                search=name,
+                statement=str(query),
+                results=len(found_fields),
+            )
+
+            session.expunge_all()
+
+            return found_fields
+
     def update_entry_path(self, entry_id: int | Entry, path: Path) -> bool:
         """Set the path field of an entry.
 
