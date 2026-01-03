@@ -1,8 +1,9 @@
-from typing import TYPE_CHECKING, Callable, override
+from collections.abc import Callable
+from typing import TYPE_CHECKING, override
 
-from PySide6.QtGui import QAction, QEnterEvent
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QHBoxLayout
 from PySide6.QtCore import QEvent, Qt, Signal
+from PySide6.QtGui import QAction, QEnterEvent
+from PySide6.QtWidgets import QHBoxLayout, QPushButton, QVBoxLayout, QWidget
 
 from tagstudio.core.library.alchemy.models import ValueType
 from tagstudio.qt.helpers.escape_text import escape_text

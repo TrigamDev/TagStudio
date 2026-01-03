@@ -72,6 +72,7 @@ from tagstudio.qt.controllers.fix_ignored_modal_controller import FixIgnoredEntr
 from tagstudio.qt.controllers.ignore_modal_controller import IgnoreModal
 from tagstudio.qt.controllers.library_info_window_controller import LibraryInfoWindow
 from tagstudio.qt.controllers.out_of_date_message_box import OutOfDateMessageBox
+from tagstudio.qt.controllers.panels.manage_fields_panel_controller import ManageFieldsPanel
 from tagstudio.qt.global_settings import (
     DEFAULT_GLOBAL_SETTINGS_PATH,
     GlobalSettings,
@@ -100,7 +101,6 @@ from tagstudio.qt.utils.file_deleter import delete_file
 from tagstudio.qt.utils.function_iterator import FunctionIterator
 from tagstudio.qt.views.main_window import MainWindow
 from tagstudio.qt.views.panel_modal import PanelModal
-from tagstudio.qt.views.panels.manage_fields_panel import ManageFieldsPanel
 from tagstudio.qt.views.splash import SplashScreen
 
 BADGE_TAGS = {
@@ -384,7 +384,7 @@ class QtDriver(DriverMixin, QObject):
 
         # Initialize the Field Manager panel
         self.field_manager_panel = PanelModal(
-            widget=ManageFieldsPanel(self, self.lib),
+            widget=ManageFieldsPanel(self.lib),
             title=Translations["field_manager.title"],
             done_callback=lambda checked=False: (
                 self.main_window.preview_panel.set_selection(self.selected, update_preview=False)

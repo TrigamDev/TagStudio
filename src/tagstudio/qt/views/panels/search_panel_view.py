@@ -1,18 +1,26 @@
 from PySide6.QtCore import QSize, Qt
-from PySide6.QtWidgets import QVBoxLayout, QWidget, QHBoxLayout, QLabel, QComboBox, QLineEdit, QScrollArea, QFrame
+from PySide6.QtWidgets import (
+    QComboBox,
+    QFrame,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QScrollArea,
+    QVBoxLayout,
+    QWidget,
+)
 
-from tagstudio.core.library.alchemy.library import Library
-from tagstudio.qt.translations import Translations
-from tagstudio.qt.views.panel_modal import PanelModal, PanelWidget
+from tagstudio.qt.views.panel_modal import PanelWidget
 
 
-class SearchPanel(PanelWidget):
+class SearchPanelView(PanelWidget):
 
-    def __init__(self, library: Library) -> None:
+    def __init__(self) -> None:
         super().__init__()
 
         self.root_layout = QVBoxLayout(self)
         self.root_layout.setContentsMargins(6, 0, 6, 0)
+        self.setMinimumSize(300, 400)
 
         # Limit container
         self.limit_container = QWidget()
@@ -23,18 +31,12 @@ class SearchPanel(PanelWidget):
         self.limit_layout.setSpacing(12)
         self.limit_layout.addStretch(1)
 
-        self.limit_title = QLabel(Translations["tag.view_limit"])
+        self.limit_title = QLabel()
         self.limit_layout.addWidget(self.limit_title)
 
         # Limit dropdown
         self.limit_combobox = QComboBox()
         self.limit_combobox.setEditable(False)
-        self.limit_combobox.addItems([str(x) for x in TagSearchPanel._limit_items])
-        self.limit_combobox.setCurrentIndex(TagSearchPanel._default_limit_idx)
-        self.limit_combobox.currentIndexChanged.connect(self.update_limit)
-        self.previous_limit: int = (
-            TagSearchPanel.tag_limit if isinstance(TagSearchPanel.tag_limit, int) else -1
-        )
         self.limit_layout.addWidget(self.limit_combobox)
         self.limit_layout.addStretch(1)
 
@@ -42,9 +44,6 @@ class SearchPanel(PanelWidget):
         self.search_field = QLineEdit()
         self.search_field.setObjectName("search_field")
         self.search_field.setMinimumSize(QSize(0, 32))
-        self.search_field.setPlaceholderText(Translations["home.search_tags"])
-        self.search_field.textEdited.connect(lambda text: self.g(text))
-        self.search_field.returnPressed.connect(lambda: self.on_return(self.search_field.text()))
 
         self.root_layout.addWidget(self.search_field)
 
@@ -62,6 +61,3 @@ class SearchPanel(PanelWidget):
         self.scroll_area.setWidget(self.scroll_contents)
 
         self.root_layout.addWidget(self.scroll_area)
-
-    def search(self, query: str | None) -> None:
-        raise NotImplementedError
