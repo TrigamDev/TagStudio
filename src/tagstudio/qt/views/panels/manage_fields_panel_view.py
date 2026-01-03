@@ -10,45 +10,19 @@ from tagstudio.core.library.alchemy.library import Library
 from tagstudio.core.library.alchemy.models import ValueType
 from tagstudio.qt.translations import Translations
 from tagstudio.qt.views.panel_modal import PanelWidget
+from tagstudio.qt.views.panels.search_panel_view import SearchPanelView
 from tagstudio.qt.views.widget.field_type_widget import FieldTypeWidget
 
 logger = structlog.get_logger(__name__)
 
 
-class ManageFieldsPanel(PanelWidget):
+class ManageFieldsPanelView(SearchPanelView):
 
-    def __init__(self, driver, library: Library):
+    def __init__(self):
         super().__init__()
-        self.lib = library
 
-        self.setMinimumSize(300, 400)
-        self.root_layout = QVBoxLayout(self)
-        self.root_layout.setContentsMargins(6, 0, 6, 0)
-
-        # Search field
-        self.search_field = QLineEdit()
-        self.search_field.setObjectName("searchField")
-        self.search_field.setMinimumSize(QSize(0, 32))
+        self.limit_title.setText(Translations["field.view_limit"])
         self.search_field.setPlaceholderText(Translations["home.search_fields"])
-        #self.search_field.textEdited.connect(lambda text: self.update_tags(text))
-        #self.search_field.returnPressed.connect(lambda: self.on_return(self.search_field.text()))
-
-        self.root_layout.addWidget(self.search_field)
-
-        # Scroll box
-        self.scroll_contents = QWidget()
-        self.scroll_layout = QVBoxLayout(self.scroll_contents)
-        self.scroll_layout.setContentsMargins(6, 0, 6, 0)
-        self.scroll_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        self.scroll_area = QScrollArea()
-        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
-        self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setFrameShadow(QFrame.Shadow.Plain)
-        self.scroll_area.setFrameShape(QFrame.Shape.NoFrame)
-        self.scroll_area.setWidget(self.scroll_contents)
-
-        self.root_layout.addWidget(self.scroll_area)
 
     def update_fields(self, query: str | None = None):
         """Update the field list given a search query."""
